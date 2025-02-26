@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>css variables dynamically changing</title>
+        <link rel="stylesheet" href="cv.css">
+    </head>
+    <body>
+        <h2>updating website look with <span class="highlight">JavaScript</span></h2>
+
+        <div class="control-bars">
+            <label for="spacing">Spacing: </label>
+            <input type="range" id="spacing" name="spacing" min="10" max="200" value="10" data-sizing="px">
+            
+            <label for="blur">Blur: </label>
+            <input type="range" id="blur" name="blur" min="0" max="25" value="10" data-sizing="px">
+
+            <label for="base">Base color: </label>
+            <input type="color" id="base" name="base" value="#ffc600">  
+        </div>
+        <img src="billi.png" alt="cat image">
+        <style>
+            :root{
+                --base: #ffc600;
+                --spacing: 200px;
+                --blur: 0px;
+            }
+            img{
+                padding: var(--spacing);
+                background: var(--base);
+                filter: blur(var(--blur));
+                
+            }
+            .highlight{
+                color: var(--base);
+            }
+            body{
+            text-align: center;
+            background-color:#193549 ;
+            color:white;
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: 100;
+            font-size: 25px;
+            }
+
+            .control-bars{
+                margin-bottom: 50px;
+            }
+            
+            input{
+                width: 100px;
+            }
+        </style>
+        <script>
+            const inputs = document.querySelectorAll('.control-bars input');
+            function handleUpdate(){
+                const suffix = this.dataset.sizing || '';
+                document.documentElement.style.setProperty(`--${this.name}`, this.value +suffix)
+            }
+            inputs.forEach(input => input.addEventListener('change', handleUpdate));
+            inputs.forEach(input => input.addEventListener('mousemove', handleUpdate));
+        </script>
+    </body>
+</html>
