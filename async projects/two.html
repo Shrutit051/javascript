@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Chai aur code</h1>
+    <button id="stop">Stop</button>
+</body>
+<!-- <script>
+   
+    // document.querySelector('#stop').addEventListener('click', function(){
+    //     clearTimeout(changeMe)
+    //     console.log("STOPPED")
+    // })
+
+    const changeText = function(){
+        document.querySelector('h1').innerHTML = "i am learning javascript"
+    }
+    const changeMe = setTimeout(changeText, 3000);
+
+    document.querySelector('#stop').addEventListener('click', function(){
+        clearTimeout(changeMe)
+        console.log("STOPPED")
+    })
+
+</script> -->
+
+<script>
+    let timeLeft = 3;
+    const changeText = function(){
+        document.querySelector('h1').innerHTML = "i am learning javascript";
+        console.log("Time's up! Text changed.");
+        clearInterval(countdown); // Clear the interval when timeout executes
+    }
+
+    // Start the main timer
+    const changeMe = setTimeout(changeText, 3000);
+
+    // Countdown every second
+    const countdown = setInterval(() => {
+        console.log(`${timeLeft} second${timeLeft > 1 ? 's' : ''} remaining...`);
+        timeLeft--;
+        
+        if (timeLeft <= 0) {
+            clearInterval(countdown);
+        }
+    }, 1000);
+
+    document.querySelector('#stop').addEventListener('click', function(){
+        clearTimeout(changeMe);
+        clearInterval(countdown);
+        console.log(`STOPPED with ${timeLeft} second(s) remaining`);
+    });
+</script>
+
+</html>
