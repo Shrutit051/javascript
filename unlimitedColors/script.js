@@ -1,42 +1,34 @@
+const randomColor = function(){
+    let color = '#'
+    const hex='0123456789ABCDEF'
+    for(let i=0; i<6; i++){
+        color+= hex[Math.floor(Math.random() * 16)]
+    }
+    console.log(color)
+    return color;
+}
 
-        let intervalId = null; // Declare in outer scope
-        
-        function randomColor() {
-            const hex = '0123456789ABCDEF';
-            let color = '#';
-            for(let i = 0; i < 6; i++) {
-                color += hex[Math.floor(Math.random() * 16)];
-            }
-            return color;
-        }
+let intervalId; //scope has to be global to be accessible from both the below functions
 
-        // Test the function
-        console.log("Random color:", randomColor());
+const startChangingColors = function(){
 
-        document.querySelector('#start').addEventListener('click', function() {
-            // Prevent multiple intervals
-            if (intervalId) {
-                clearInterval(intervalId);
-            }
-            
-            // Change color immediately
-            document.body.style.backgroundColor = randomColor();
-            
-            // Then start interval
-            intervalId = setInterval(() => {
-                document.body.style.backgroundColor = randomColor();
-                console.log("Color changed to:", document.body.style.backgroundColor);
-            }, 1000);
-            
-            console.log("Color changing started");
-        });
+    console.log("color changing started")
+    const changeColor = function(){
+    document.body.style.backgroundColor = randomColor();
+    }
 
-        document.querySelector('#stop').addEventListener('click', function() {
-            if (intervalId) {
-                clearInterval(intervalId);
-                intervalId = null;
-                console.log("Color changing stopped");
-            } else {
-                console.log("No active interval to stop");
-            }
-        });
+    if(intervalId ==null){
+        intervalId = setInterval(changeColor, 1000)
+    }
+    
+}
+
+const stopChangingColors = function(){
+    console.log("color changing stopped")
+    clearInterval(intervalId)
+    intervalId = null;
+} 
+
+
+document.querySelector('#start').addEventListener('click', startChangingColors);
+document.querySelector('#stop').addEventListener('click', stopChangingColors);
