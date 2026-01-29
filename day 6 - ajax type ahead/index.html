@@ -1,0 +1,97 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Type Ahead 👀</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="https://fav.farm/🔥" />
+</head>
+<body>
+
+  <form class="search-form">
+    <input type="text" class="search" placeholder="City or State">
+    <ul class="suggestions">
+      <li>Filter for a city</li>
+      <li>or a state</li>
+    </ul>
+  </form>
+<script>
+    const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+    console.log(endpoint);
+
+    const cities = [];
+    // const prom = fetch (endpoint)
+    // console.log(prom);
+    //return a pending promise
+    //so when this promise gets resolved THEN we have to do something
+    
+    //fetch(endpoint).then(data => console.log(data))
+    //this yet doesnt know what kind of data is coming back 
+    //from fetch api
+    //hence convert it to json format
+
+    // fetch(endpoint)
+    // .then(data => data.json())
+    // .then(data2 => console.log(data2))
+    //now we can see the list of cities
+    //this has to be pushed into the cities array
+
+    //  fetch(endpoint)
+    // .then(data => data.json())
+    // .then(data2 => cities.push(data2))
+    // cities.push(2)
+    // cities.push(33)
+    // cities = [33, 2, [actual city ka information]]
+    //becomes array of arrays\
+
+     fetch(endpoint)
+    .then(data => data.json())
+    .then(data2 => cities.push(...data2))
+    // ... is the spread function to individually push each 
+    //element of the data2 into the cities array
+    console.log(cities)
+
+    function findMatches(wordToMatch, cities){
+      return cities.filter(place =>{
+        //see if the search of user matches any state or city
+        //return place.city.match(wordToMatch)
+        //this searches actually for 'wordToMatch'
+        //whereas we need it as a variable
+
+        const regex = new RegExp(wordToMatch, 'gi');
+        return place.city.match(regex) || place.state.match(regex)
+      })
+    }
+
+    function numberWithCommas(x) {
+      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+
+    function displayMatches(){
+      const matchArray = findMatches(this.value, cities)
+      // console.log(matchArray)
+
+      const html = matchArray.map(place =>{
+        const regex = new RegExp(this.value, 'gi');
+        const cityName = place.city.replace(regex, `<span class="hl">${this.value}</span>`)
+        const stateName = place.state.replace(regex, `<span class="hl">${this.value}</span>`)
+        return `
+          <li>
+            <span class = "name"> ${cityName}, ${stateName}</span>
+            <span class = "population"> ${numberWithCommas(place.population)}</span>
+          </li>
+        `;
+      }).join('');
+      suggestions.innerHTML = html
+    }
+
+    const searchInput = document.querySelector('.search')
+    const suggestions = document.querySelector('.suggestions')
+
+    searchInput.addEventListener('change', displayMatches)
+    searchInput.addEventListener('keyup', displayMatches)
+
+</script>
+</body>
+</html>
